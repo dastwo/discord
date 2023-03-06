@@ -1,5 +1,6 @@
 const express = require('express')
 const http = require('http')
+const {readdirSync} = require('fs')
 const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv').config()
@@ -11,6 +12,7 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+readdirSync('./routes').map((r)=> app.use('/api', require(`./routes/${r}`)))
 
 const server = http.createServer(app)
 mongoose.connect(process.env.MONGO_URI).then(()=>{
