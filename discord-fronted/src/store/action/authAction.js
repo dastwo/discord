@@ -1,4 +1,5 @@
 import * as api from  '../../api'
+import { openAlertMessage } from './AlertActions'
  
 export const authActions = {
     SET_USER_DETAILS: 'AUTH.SET_USER_DETAILS'
@@ -6,8 +7,8 @@ export const authActions = {
 
 export const getActions = (dispatch)=>{
     return {
-        login: (userDetails, history) => dispatch(login(userDetails, history)),
-        register:(userDetails, history)=>dispatch(register(userDetails, history)),
+        login: (userDetails, navigate) => dispatch(login(userDetails, navigate)),
+        register:(userDetails, navigate)=>dispatch(register(userDetails, navigate)),
     }
 }
 
@@ -18,34 +19,33 @@ const setUseDetails = (userDetails)=>{
     }
 }
 
-const login = (userDetails, history)=>{
+const login = (userDetails, navigate)=>{
     return async (dispatch)=>{
         const response = await api.login(userDetails)
-
         if (response.error) {
-            
+            dispatch(openAlertMessage(response?.exception?.response?.data))
         }else{
             const {userDetails} = response?.data
             localStorage.setItem('user', JSON.stringify(userDetails))
 
             dispatch(setUseDetails(userDetails))
-            history.push('/dashboard')
+            navigate('/dashboard')
         }
     }
 }
 
-const register = (userDetails, history)=>{
+const register = (userDetails, navigate)=>{
     return async (dispatch)=>{
         const response = await api.register(userDetails)
 
         if (response.error) {
-            
+            dispatch(openAlertMessage(response?.exception?.response?.data))
         }else{
             const {userDetails} = response?.data
             localStorage.setItem('user', JSON.stringify(userDetails))
 
             dispatch(setUseDetails(userDetails))
-            history.push('/dashboard')
+            navigate('/dashboard')
         }
     }
 }

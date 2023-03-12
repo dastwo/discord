@@ -4,6 +4,7 @@ import LoginPage from './authPages/loginPage/LoginPage'
 import RegisterPage from './authPages/registerPage/RegisterPage'
 import DashboardPage from './dashboard/DashboardPage'
 import './App.css';
+import AlertNotification from './components/AlertNotification';
 function App() {
   return (
     <>
@@ -15,6 +16,7 @@ function App() {
         <Route path='/' element={<DashboardPage/>}/>
       </Routes>
     </Router>
+    <AlertNotification/>
     </>
   );
 }
